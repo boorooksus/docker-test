@@ -6,19 +6,20 @@ const PORT = 8080;
 const app = express();
 
 app.get('/', (req, res) => {
-    const exec = require('child_process').exec;
 
-    const result = exec('dir');
+    const { exec } = require('child_process');
+    exec('echo hello world', (error, stdout, stderr) => {
+    if (error) {
+        console.error(`exec error: ${error}`);
+        return;
+    }
+    console.log(`stdout: ${stdout}`);
+    console.error(`stderr: ${stderr}`);
 
-    result.stdout.on('data', function(ls_result){
-        console.log(ls_result.toString());
-    })
-
-    result.stderr.on('data', function(data) {
-        console.log(data.toString());
+    res.send(stdout);
     });
 
-    res.send("Hello World!!!")
+    
 });
 
 app.listen(PORT);

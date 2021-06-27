@@ -1,0 +1,26 @@
+sudo: required
+
+language: generic
+
+services:
+  - docker
+
+before_install:
+  - echo "start creating an image with dockerfile"
+  - docker build -t booroogi/node -f Dockerfile.dev .
+
+script: 
+  - docker run -e CI=true booroogi/node npm run test -- --coverage
+
+
+# deploy:
+#   provider: elasticbeanstalk
+#   region: "us-east-2"
+#   app: "docker-react-app"
+#   env: "Dockerreactapp-env"
+#   bucket_name: "elasticbeanstalk-us-east-2-560375084453"
+#   bucket_path: "docker-react-app"
+#   on:
+#     branch: master
+#   access_key_id: $AWS_ACCESS_KEY
+#   secret_access_key: $AWS_SECRET_ACCESS_KEY
